@@ -116,23 +116,31 @@ jobs:
       - name: Publish the release
         if: github.ref_type == 'tag'
         shell: bash
+        env:
+          # The token is not in the environment by itself; "gh" needs it.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -o pipefail
           tag="${GITHUB_REF_NAME}"
-          files=(dist/windows/pchat_app-*-windows-x64-installer.exe dist/windows/pchat_app-windows-x64.zip)
+          installer=$(ls dist/windows/pchat_app-*-windows-x64-installer.exe)
+          zipfile=dist/windows/pchat_app-windows-x64.zip
+          printf '%s\n' \
+            "Windows build of PCHAT." \
+            "" \
+            "The installer puts the app into Program Files and leaves a Desktop shortcut and a Start menu entry behind, both with PCHAT's own icon. It also registers the app in Settings, so it can be uninstalled from there." \
+            "" \
+            "The zip is the app folder itself, for anyone who would rather run it without installing. Keep the whole folder: the .exe needs data and the .dll files next to it." \
+            > release-notes.md
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" "${files[@]}" --clobber
+            gh release upload "$tag" "$installer" "$zipfile" --clobber 2>&1 | tee -a build-output.log
           else
-            gh release create "$tag" "${files[@]}" \
+            gh release create "$tag" "$installer" "$zipfile" \
               --title "PCHAT $tag" \
-              --notes "Windows build of PCHAT.
-
-          * \`pchat_app-*-windows-x64-installer.exe\` — the installer: it puts
-            the app into Program Files and leaves a Desktop and a Start menu
-            shortcut behind, both with PCHAT's own icon.
-          * \`pchat_app-windows-x64.zip\` — the app folder itself, for anyone
-            who would rather run it without installing. Keep the whole folder:
-            the .exe needs \`data\` and the .dll files next to it."
+              --notes-file release-notes.md 2>&1 | tee -a build-output.log
           fi
+          code=${PIPESTATUS[0]}
+          gh release view "$tag" 2>&1 | tee -a build-output.log
+          exit $code
 
       # ── Keeping the log ─────────────────────────────────────────────────
       - name: Keep the build log
