@@ -94,3 +94,30 @@ jobs:
           name: pchat-windows
           path: dist/windows/pchat_app-windows-x64.zip
           if-no-files-found: error
+
+      # ── The installer ───────────────────────────────────────────────────
+      # A single .exe that installs the app: Desktop shortcut, Start menu
+      # entry and an entry in "Apps", all with PCHAT's own icon.
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress --yes --limit-output
+
+      - name: Build the installer
+        shell: bash
+        run: |
+          set -e
+          iscc=$(find "/c/Program Files (x86)" "/c/Program Files" -name ISCC.exe 2>/dev/null | head -1)
+          if [ -z "$iscc" ]; then
+            echo "Inno Setup's compiler was not found" >&2
+            exit 1
+          fi
+          echo "Using $iscc"
+          version=$(grep -E '^version:' pubspec.yaml | head -1 | sed -E 's/^version: *([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          "$iscc" "/DAppVersion=$version" tool/windows_installer.iss
+          ls -la dist/windows/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pchat-installer
+          path: dist/windows/pchat_app-*-windows-x64-installer.exe
+          if-no-files-found: error
