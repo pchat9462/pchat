@@ -91,6 +91,10 @@ jobs:
           # resolved the same way by every caller of the compiler.
           root=$(pwd -W)
           version=$(grep -E '^version:' pubspec.yaml | head -1 | sed -E 's/^version: *([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          # MSYS2 rewrites an argument that starts with a slash into a Windows
+          # path, which would turn "/DReleaseDir=..." into a stray file name
+          # and the compiler would complain about a second script file.
+          MSYS2_ARG_CONV_EXCL="*" MSYS_NO_PATHCONV=1 \
           "$iscc" \
             "/DReleaseDir=$root/build/windows/x64/runner/Release" \
             "/DSetupIconFile=$root/windows/runner/resources/app_icon.ico" \
