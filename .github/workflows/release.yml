@@ -111,6 +111,29 @@ jobs:
           path: dist/windows/pchat_app-*-windows-x64-installer.exe
           if-no-files-found: error
 
+      # The same files on the release page of the tag, where they can be
+      # downloaded from a link that does not change from run to run.
+      - name: Publish the release
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          files=(dist/windows/pchat_app-*-windows-x64-installer.exe dist/windows/pchat_app-windows-x64.zip)
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${files[@]}" --clobber
+          else
+            gh release create "$tag" "${files[@]}" \
+              --title "PCHAT $tag" \
+              --notes "Windows build of PCHAT.
+
+          * \`pchat_app-*-windows-x64-installer.exe\` — the installer: it puts
+            the app into Program Files and leaves a Desktop and a Start menu
+            shortcut behind, both with PCHAT's own icon.
+          * \`pchat_app-windows-x64.zip\` — the app folder itself, for anyone
+            who would rather run it without installing. Keep the whole folder:
+            the .exe needs \`data\` and the .dll files next to it."
+          fi
+
       # ── Keeping the log ─────────────────────────────────────────────────
       - name: Keep the build log
         if: always()

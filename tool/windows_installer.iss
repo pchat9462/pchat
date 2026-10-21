@@ -79,7 +79,7 @@ SolidCompression=yes
 WizardStyle=modern
 ; The app is 64-bit only (the WebView2 plugin and the runner are x64).
 ArchitecturesAllowed=x64compatible
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
 ; Let the installer close a running PCHAT instead of failing.
 CloseApplications=yes
