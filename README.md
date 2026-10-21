@@ -164,12 +164,18 @@ Windows-এ (Flutter + Visual Studio 2022 থাকলে) — শুধু এ�
 powershell -ExecutionPolicy Bypass -File tool\build_windows.ps1
 ```
 
+Windows-এ ইনস্টলার বানাতে (Inno Setup 6 লাগবে):
+```powershell
+"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" tool\windows_installer.iss
+```
+
 | তৈরি হয় | কার জন্য |
 |---|---|
 | `dist/linux/pchat_app-<ver>-linux-x64-installer.run` | **Linux ইনস্টলার** — অ্যাপ + Applications মেনু + ডেস্কটপ শর্টকাট + আইকন, সব এক ফাইলে |
 | `dist/linux/pchat_app-<ver>-linux-x64.tar.gz` | Linux/Arch — খুলে `./run.sh` (লাইব্রেরি না থাকলে নিজেই বলে দেবে) |
 | `dist/android/pchat_app-<ver>.apk` | **একটাই APK — সব Android ফোনে চলে** (`adb install -r …`) |
-| `dist/windows/pchat_app-<ver>-windows-x64.zip` | Windows (GitHub Actions বা Windows-এ স্ক্রিপ্ট) |
+| `dist/windows/pchat_app-<ver>-windows-x64-installer.exe` | **Windows ইনস্টলার** — Program Files-এ ইনস্টল করে, ডেস্কটপ + Start মেনু শর্টকাট + "Apps"-এ রেজিস্ট্রেশন, সবগুলোতে PCHAT-এর আইকন |
+| `dist/windows/pchat_app-<ver>-windows-x64.zip` | Windows (GitHub Actions বা Windows-এ স্ক্রিপ্ট) — ইনস্টল ছাড়াই চালাতে চাইলে |
 | `dist/SHA256SUMS` | সব ফাইলের SHA-256 |
 
 প্রকাশের সময় দরকার হলে `tool/package_release.sh --all-android` চালালে per-ABI APK আর Play Store-এর `.aab`-ও তৈরি হবে (ফোনে ইনস্টলের জন্য লাগে না)।
