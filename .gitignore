@@ -71,3 +71,7 @@ app.*.map.json
 /android/key.properties
 .env
 .env.*
+
+# The CI build log, which the workflow pushes to the `ci-logs` branch when a
+# build fails. The `*.log` rule above would keep it out of the commit.
+!ci-logs/*.log

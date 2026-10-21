@@ -32,6 +32,16 @@ set(CMAKE_CXX_FLAGS_PROFILE "${CMAKE_CXX_FLAGS_RELEASE}")
 # Use Unicode for all projects.
 add_definitions(-DUNICODE -D_UNICODE)
 
+# Microsoft's standard library now refuses to compile <experimental/coroutine>
+# (error STL1011, a static assertion). Two of the plugins still include it, so
+# the build stops with "error C2338" before it even reaches our own code. The
+# library itself offers this switch to silence it; C++20's <coroutine> is the
+# replacement, but that is the plugins' business, not ours.
+#
+# This has to be set here, before the plugins are added further down, so that
+# every plugin target inherits it.
+add_definitions(-D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
+
 # Compilation settings that should be applied to most targets.
 #
 # Be cautious about adding new options here, as plugins use this function by
