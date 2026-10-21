@@ -22,6 +22,8 @@ jobs:
   windows:
     name: Windows x64
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -59,6 +61,24 @@ jobs:
           name: build-log
           path: build-output.log
           if-no-files-found: ignore
+
+      # The raw log is also pushed to a `ci-logs` branch, where it can be read
+      # straight from a raw URL — GitHub hides the run logs and the job summary
+      # from anyone who is not signed in.
+      - name: Push the build log to the ci-logs branch
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path build-output.log) {
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            New-Item -ItemType Directory -Force -Path ci-logs | Out-Null
+            Copy-Item build-output.log "ci-logs/build-${{ github.run_id }}.log" -Force
+            git checkout -B ci-logs
+            git add ci-logs
+            git commit -m "ci: build log for run ${{ github.run_id }}"
+            git push origin ci-logs --force
+          }
 
       - name: Zip the release folder
         shell: pwsh
