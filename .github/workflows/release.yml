@@ -34,7 +34,31 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build windows --release
+
+      # The build log is kept and, when the build fails, copied into the job
+      # summary — the summary is readable straight from the run page, so a
+      # failure can be diagnosed without digging through the raw log.
+      - name: Build the Windows release
+        shell: pwsh
+        run: |
+          $log = "build-output.log"
+          flutter build windows --release *>&1 | Tee-Object -FilePath $log
+          $code = $LASTEXITCODE
+          if ($code -ne 0) {
+            "## flutter build windows --release failed" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            "```text" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            Get-Content $log -Tail 120 | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            "```" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          }
+          exit $code
+
+      - name: Keep the build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build-output.log
+          if-no-files-found: ignore
 
       - name: Zip the release folder
         shell: pwsh
