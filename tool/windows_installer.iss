@@ -93,8 +93,9 @@ english.CreateDesktopIcon=Create a &desktop shortcut
 english.LaunchProgram=Start {#AppName}
 
 [Tasks]
-; Checked by default, but the user can turn it off.
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checked
+; A task is checked by default — there is no "checked" flag; "unchecked" is
+; what would turn that off. The user can still untick the box.
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 ; The whole Release folder: the .exe, the plugin .dll files and data\.
