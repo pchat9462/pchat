@@ -41,17 +41,19 @@ jobs:
       # summary — the summary is readable straight from the run page, so a
       # failure can be diagnosed without digging through the raw log.
       - name: Build the Windows release
-        shell: pwsh
+        shell: bash
         run: |
-          $log = "build-output.log"
-          flutter build windows --release *>&1 | Tee-Object -FilePath $log
-          $code = $LASTEXITCODE
-          if ($code -ne 0) {
-            "## flutter build windows --release failed" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-            "```text" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-            Get-Content $log -Tail 120 | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-            "```" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-          }
+          set -o pipefail
+          flutter build windows --release 2>&1 | tee build-output.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            {
+              echo "## flutter build windows --release failed"
+              echo '```text'
+              tail -120 build-output.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
           exit $code
 
       - name: Keep the build log
@@ -67,18 +69,18 @@ jobs:
       # from anyone who is not signed in.
       - name: Push the build log to the ci-logs branch
         if: always()
-        shell: pwsh
+        shell: bash
         run: |
-          if (Test-Path build-output.log) {
+          if [ -f build-output.log ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            New-Item -ItemType Directory -Force -Path ci-logs | Out-Null
-            Copy-Item build-output.log "ci-logs/build-${{ github.run_id }}.log" -Force
+            mkdir -p ci-logs
+            cp build-output.log "ci-logs/build-${{ github.run_id }}.log"
             git checkout -B ci-logs
             git add ci-logs
-            git commit -m "ci: build log for run ${{ github.run_id }}"
+            git commit -m "ci: build log for run ${{ github.run_id }}" || true
             git push origin ci-logs --force
-          }
+          fi
 
       - name: Zip the release folder
         shell: pwsh
