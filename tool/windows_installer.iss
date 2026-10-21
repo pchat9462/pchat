@@ -14,12 +14,20 @@
 ;     "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" tool\windows_installer.iss
 ;
 ; The CI does the same on the windows-latest runner; see
-; .github/workflows/release.yml.
+; .github/workflows/release.yml. It passes the paths in absolute form, because
+; a relative path is not resolved the same way by every caller.
 
 #ifndef ReleaseDir
-  ; Where "flutter build windows --release" put the files. The path is
-  ; relative to this script, i.e. to the tool\ folder.
+  ; Where "flutter build windows --release" put the files.
   #define ReleaseDir "..\build\windows\x64\runner\Release"
+#endif
+
+#ifndef SetupIconFile
+  #define SetupIconFile "..\windows\runner\resources\app_icon.ico"
+#endif
+
+#ifndef OutputDir
+  #define OutputDir "..\dist\windows"
 #endif
 
 #ifndef AppVersion
@@ -51,7 +59,7 @@ DisableProgramGroupPage=yes
 DisableDirPage=yes
 
 ; The installer's own icon: PCHAT's, straight from the Windows runner.
-SetupIconFile=..\windows\runner\resources\app_icon.ico
+SetupIconFile={#SetupIconFile}
 ; What the entry in "Apps" shows.
 UninstallDisplayIcon={app}\{#AppExeName}
 UninstallDisplayName={#AppName}
@@ -62,7 +70,7 @@ VersionInfoProductName={#AppName}
 VersionInfoProductVersion={#AppVersion}
 
 OutputBaseFilename=pchat_app-{#AppVersion}-windows-x64-installer
-OutputDir=..\dist\windows
+OutputDir={#OutputDir}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern

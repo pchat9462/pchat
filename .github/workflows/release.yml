@@ -1,11 +1,13 @@
-# Windows .exe only — the APK and the Linux bundle are built locally
-# (tool/package_release.sh). This exists because the Windows build needs MSVC,
-# which only runs on Windows; GitHub's windows-latest runner has it.
+# Windows .exe and installer only — the APK and the Linux bundle are built
+# locally (tool/package_release.sh). This exists because the Windows build
+# needs MSVC, which only runs on Windows; GitHub's windows-latest runner has
+# it.
 #
 # How to use:
 #   1. push this project to a GitHub repository (private is fine)
 #   2. Actions tab -> "Build Windows exe" -> Run workflow
-#   3. download the pchat-windows artifact from the finished run
+#   3. download the pchat-windows artifact (the app) and the pchat-installer
+#      artifact (a single .exe that installs it) from the finished run
 #
 # The zip contains the whole Release folder: keep data/ and the .dll files
 # next to pchat_app.exe — copying only the .exe will not run.
@@ -37,9 +39,8 @@ jobs:
       - run: flutter analyze
       - run: flutter test
 
-      # The build log is kept and, when the build fails, copied into the job
-      # summary — the summary is readable straight from the run page, so a
-      # failure can be diagnosed without digging through the raw log.
+      # The build log is kept, and when the build fails its tail is copied
+      # into the job summary.
       - name: Build the Windows release
         shell: bash
         run: |
@@ -55,32 +56,6 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
           fi
           exit $code
-
-      - name: Keep the build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build-output.log
-          if-no-files-found: ignore
-
-      # The raw log is also pushed to a `ci-logs` branch, where it can be read
-      # straight from a raw URL — GitHub hides the run logs and the job summary
-      # from anyone who is not signed in.
-      - name: Push the build log to the ci-logs branch
-        if: always()
-        shell: bash
-        run: |
-          if [ -f build-output.log ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            mkdir -p ci-logs
-            cp build-output.log "ci-logs/build-${{ github.run_id }}.log"
-            git checkout -B ci-logs
-            git add ci-logs
-            git commit -m "ci: build log for run ${{ github.run_id }}" || true
-            git push origin ci-logs --force
-          fi
 
       - name: Zip the release folder
         shell: pwsh
@@ -105,19 +80,56 @@ jobs:
       - name: Build the installer
         shell: bash
         run: |
-          set -e
+          set -o pipefail
           iscc=$(find "/c/Program Files (x86)" "/c/Program Files" -name ISCC.exe 2>/dev/null | head -1)
           if [ -z "$iscc" ]; then
-            echo "Inno Setup's compiler was not found" >&2
+            echo "Inno Setup's compiler was not found" | tee -a build-output.log
             exit 1
           fi
-          echo "Using $iscc"
+          echo "Using $iscc" | tee -a build-output.log
+          # Every path is passed in absolute form: a relative path is not
+          # resolved the same way by every caller of the compiler.
+          root=$(pwd -W)
           version=$(grep -E '^version:' pubspec.yaml | head -1 | sed -E 's/^version: *([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-          "$iscc" "/DAppVersion=$version" tool/windows_installer.iss
-          ls -la dist/windows/
+          "$iscc" \
+            "/DReleaseDir=$root/build/windows/x64/runner/Release" \
+            "/DSetupIconFile=$root/windows/runner/resources/app_icon.ico" \
+            "/DOutputDir=$root/dist/windows" \
+            "/DAppVersion=$version" \
+            tool/windows_installer.iss 2>&1 | tee -a build-output.log
+          code=${PIPESTATUS[0]}
+          ls -la dist/windows/ | tee -a build-output.log
+          exit $code
 
       - uses: actions/upload-artifact@v4
         with:
           name: pchat-installer
           path: dist/windows/pchat_app-*-windows-x64-installer.exe
           if-no-files-found: error
+
+      # ── Keeping the log ─────────────────────────────────────────────────
+      - name: Keep the build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build-output.log
+          if-no-files-found: ignore
+
+      # The raw log is also pushed to a `ci-logs` branch, where it can be read
+      # straight from a raw URL — GitHub hides the run logs and the job summary
+      # from anyone who is not signed in.
+      - name: Push the build log to the ci-logs branch
+        if: always()
+        shell: bash
+        run: |
+          if [ -f build-output.log ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            mkdir -p ci-logs
+            cp build-output.log "ci-logs/build-${{ github.run_id }}.log"
+            git checkout -B ci-logs
+            git add -f ci-logs
+            git commit -m "ci: build log for run ${{ github.run_id }}" || true
+            git push origin ci-logs --force
+          fi
