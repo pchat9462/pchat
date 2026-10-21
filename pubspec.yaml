@@ -1,0 +1,67 @@
+name: pchat_app
+description: "PCHAT — a lightweight cross-platform wrapper that runs the PCHAT web app (Android, Windows, Linux)."
+publish_to: 'none'
+
+# versionName / versionCode on Android, product version on Windows and Linux.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # One WebView API for Android (system WebView), Windows (WebView2) and
+  # Linux (WebKitGTK).
+  webview_all: ^1.4.4
+
+  # Platform-specific controllers, pulled in explicitly because the app uses
+  # their platform-only APIs (file chooser on Android, engine settings on
+  # Linux/Windows).
+  webview_all_android: ^1.4.4
+  webview_all_linux: ^1.4.4
+  webview_all_windows: ^1.4.4
+
+  # Open external links (Google Sheets/Drive, mail, phone) in the real browser.
+  url_launcher: ^6.3.3
+
+  # Detect "no internet" so the app can show its own offline screen.
+  connectivity_plus: ^7.3.2
+
+  # Answer <input type="file"> on Android with the native file chooser.
+  file_selector: ^1.1.0
+
+  # Ask Android for the camera/microphone runtime permissions that WebRTC
+  # calls need before the WebView is allowed to use them.
+  #
+  # Pinned to an older release on purpose. From permission_handler 13.0.0 on,
+  # the Android implementation declares `compileSdk = 37`, while the Android
+  # Gradle plugin Flutter currently ships (9.1.0) supports at most 36 — the
+  # build then stops dead with "requires libraries … to compile against version
+  # 37". 12.0.3 is the newest release whose Android half (13.0.1) still
+  # compiles against SDK 35. Bump this again once Flutter's AGP can do 37.
+  permission_handler: 12.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  webview_platform_interface: ^1.4.4
+  connectivity_plus_platform_interface: ^2.1.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # Loading animation, drawn small and centred while the page loads.
+    - assets/animations/animation.apng
+
+    # "Connection Lost" artwork for the offline screen: the wide drawing for
+    # desktop windows, the tall one for phones.
+    - assets/images/
+
+    # The one source of truth for the app icon. The Linux window icon is read
+    # straight from here at runtime; `tool/app_icons.sh` turns the same file
+    # into the Android launcher and Windows .ico icons.
+    - assets/icon/
