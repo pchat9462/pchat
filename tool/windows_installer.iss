@@ -71,7 +71,10 @@ VersionInfoProductVersion={#AppVersion}
 
 OutputBaseFilename=pchat_app-{#AppVersion}-windows-x64-installer
 OutputDir={#OutputDir}
-Compression=lzma2/max
+; lzma2 at the "normal" level: the smallest setting ("max") is several times
+; slower to compress the 30 MB of WebView2 and Flutter binaries, and the
+; installer is a couple of megabytes bigger for it.
+Compression=lzma2/normal
 SolidCompression=yes
 WizardStyle=modern
 ; The app is 64-bit only (the WebView2 plugin and the runner are x64).
