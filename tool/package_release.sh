@@ -99,6 +99,22 @@ That produces, in dist\windows\:
 
 Ship the WHOLE folder (data\ and the .dll files next to the .exe), not the
 .exe alone. Users need the WebView2 Runtime, which ships with Windows 10/11.
+
+── The installer ───────────────────────────────────────────────────────────
+
+tool\windows_installer.iss (Inno Setup 6) wraps that folder into a single
+installer .exe:
+
+    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" tool\windows_installer.iss
+
+It installs the app into Program Files\PCHAT and leaves behind a Desktop
+shortcut, a Start menu entry and an entry in Settings -> Apps, all of them
+carrying PCHAT's own icon.
+
+The GitHub workflow does both in one go and publishes the result on the
+release page of the tag:
+
+    https://github.com/pchat9462/pchat/releases
 EOF
 
 # ── Release notes ─────────────────────────────────────────────────────────

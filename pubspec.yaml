@@ -3,7 +3,7 @@ description: "PCHAT — a lightweight cross-platform wrapper that runs the PCHAT
 publish_to: 'none'
 
 # versionName / versionCode on Android, product version on Windows and Linux.
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.13.5
