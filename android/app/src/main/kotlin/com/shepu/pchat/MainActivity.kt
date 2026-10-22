@@ -1,4 +1,4 @@
-package io.github.shepu1.pchat
+package com.shepu.pchat
 
 import io.flutter.embedding.android.FlutterActivity
 

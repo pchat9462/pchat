@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.shepu1.pchat"
+    namespace = "com.shepu.pchat"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "io.github.shepu1.pchat"
+        applicationId = "com.shepu.pchat"
         // webview_all_android requires API 24 (Android 7.0) or newer.
         minSdk = 24
         targetSdk = flutter.targetSdkVersion

@@ -253,7 +253,7 @@ tool/app_icons.sh --install-linux /path/to/bundle/pchat_app   # অথবা প
 | `android:windowSoftInputMode="adjustResize"` | কীবোর্ড খুললে চ্যাট ইনপুট ঠিকভাবে উপরে ওঠে |
 | `label="PCHAT"`, `minSdk=24` | অ্যাপের নাম ও ন্যূনতম সমর্থিত Android |
 
-`MainActivity` প্যাকেজ: `io.github.shepu1.pchat` (নিজস্ব applicationId, `com.example` নয়)।
+`MainActivity` প্যাকেজ: `com.shepu.pchat` (নিজস্ব applicationId, `com.example` নয়)।
 
 ### Linux / Windows
 - **চালু হওয়ামাত্র বর্ডারলেস ম্যাক্সিমাইজড, আর OS-এর টাস্কবার/প্যানেল অক্ষত** — OS-এর কোনো টাইটেল বার/বর্ডার/উইন্ডো বাটন নেই, কিন্তু উইন্ডোটি ফুলস্ক্রিন নয়: শুধু *work area* জুড়ে থাকে, তাই টাস্কবার/ডক ঢাকা পড়ে না।

@@ -156,9 +156,9 @@ void main() {
       // URI makes the WebView drop the upload without a word.
       expect(
         webViewFilePath(
-          '/data/user/0/io.github.shepu1.pchat/cache/x/photo.jpg',
+          '/data/user/0/com.shepu.pchat/cache/x/photo.jpg',
         ),
-        'file:///data/user/0/io.github.shepu1.pchat/cache/x/photo.jpg',
+        'file:///data/user/0/com.shepu.pchat/cache/x/photo.jpg',
       );
     });
 
