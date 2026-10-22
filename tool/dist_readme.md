@@ -10,6 +10,7 @@
 | `linux/pchat_app-<ver>-linux-x64-installer.run` | **Linux ইনস্টলার** — Applications মেনু + ডেস্কটপে শর্টকাট, একই আইকন, ফাইলগুলো লুকানো ফোল্ডারে | `chmod +x …installer.run && ./…installer.run` |
 | `linux/pchat_app-<ver>-linux-x64.tar.gz` | Linux/Arch বিল্ড (অ্যাপ + `run.sh` + `data/` + `lib/`) | `tar xzf …` → `cd pchat_app-<ver>` → `./run.sh` |
 | `android/pchat_app-<ver>.apk` | **একটাই APK — সব Android ফোনে চলে** | ফোনে কপি করে ট্যাপ করুন, বা `adb install -r dist/android/pchat_app-<ver>.apk` |
+| `windows/…-windows-x64-installer.exe` | **Windows ইনস্টলার** — Program Files-এ ইনস্টল, ডেস্কটপ + Start মেনু শর্টকাট, "Apps"-এ রেজিস্ট্রেশন (GitHub Actions বানায়) | ডাউনলোড করে ডাবল-ক্লিক |
 | `windows/…-windows-x64.zip` | Windows | GitHub Actions দিয়ে বানান (নিচে) বা Windows মেশিনে `tool\build_windows.ps1` |
 | `SHA256SUMS` | সব ফাইলের চেকসাম | `cd dist && sha256sum -c SHA256SUMS` |
 
@@ -83,7 +84,11 @@ Linux-এ MSVC টুলচেইন থাকে না, তাই Windows ব�
 
 1. প্রজেক্টটা একটা GitHub রিপোতে পুশ করুন
 2. Actions → **Build Windows exe** → *Run workflow*
-3. রান শেষ হলে `pchat-windows` artifact-এ `pchat_app-<ver>-windows-x64.zip` নামবে
+3. রান শেষ হলে `pchat-windows` artifact-এ `pchat_app-<ver>-windows-x64.zip` নামবে,
+   আর `pchat-installer` artifact-এ **সিঙ্গেল ইনস্টলার** `.exe`
+
+`v*` ট্যাগ পুশ করলে ফাইলগুলো নিজে থেকে রিলিজ পেজেও উঠে যায়:
+<https://github.com/pchat9462/pchat/releases> — সেখানে **ইনস্টলারটি**ই ডাউনলোড করুন।
 
 নিজের Windows মেশিন থাকলে Flutter + Visual Studio 2022 ("Desktop development with C++") দিয়ে
 এক কমান্ডেই হয়:
@@ -92,8 +97,14 @@ Linux-এ MSVC টুলচেইন থাকে না, তাই Windows ব�
 powershell -ExecutionPolicy Bypass -File tool\build_windows.ps1
 ```
 
+ইনস্টলার বানাতে Inno Setup 6 লাগবে:
+
+```powershell
+"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" tool\windows_installer.iss
+```
+
 **পুরো ফোল্ডারটি** বিতরণ করতে হবে (`data\` আর `*.dll` ফাইলগুলো `.exe`-এর পাশে থাকা বাধ্যতামূলক) —
-শুধু `.exe` কপি করলে চলবে না।
+শুধু `.exe` কপি করলে চলবে না। ইনস্টলার এই কাজটা নিজেই করে।
 
 ## সাইনিং সম্পর্কে ⚠️
 
