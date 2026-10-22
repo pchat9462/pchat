@@ -1,0 +1,143 @@
+Resolving dependencies...
+Downloading packages...
+  cross_file 0.3.5+5 (0.4.0 available)
+  file_selector_macos 0.9.5+1 (0.9.5+2 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.0 available)
+  permission_handler_apple 9.6.2 (9.6.3 available)
+  petitparser 7.0.2 (7.1.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.3 available)
+  webview_all 1.4.4 (1.4.5 available)
+  webview_all_android 1.4.4 (1.4.5 available)
+  webview_all_linux 1.4.4 (1.4.5 available)
+  webview_all_ohos 1.4.4 (1.4.5 available)
+  webview_all_web 1.4.4 (1.4.5 available)
+  webview_all_windows 1.4.4 (1.4.5 available)
+  webview_all_wkwebview 1.4.4 (1.4.5 available)
+  webview_platform_interface 1.4.4 (1.4.5 available)
+  xml 7.0.1 (7.1.0 available)
+Got dependencies!
+19 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building Windows application...                                   176.7s
+√ Built build\windows\x64\runner\Release\pchat_app.exe
+Using /c/Program Files (x86)/Inno Setup 6/ISCC.exe
+Inno Setup 6 Command-Line Compiler
+Copyright (C) 1997-2026 Jordan Russell. All rights reserved.
+Portions Copyright (C) 2000-2026 Martijn Laan. All rights reserved.
+Portions Copyright (C) 2001-2004 Alex Yackimoff. All rights reserved.
+https://www.innosetup.com
+
+Compiler engine version: Inno Setup 6.7.1
+Non-commercial use only
+
+Preprocessing
+   Reading file: C:\Program Files (x86)\Inno Setup 6\ISPPBuiltins.iss
+Parsing [Setup] section, line 44
+Parsing [Setup] section, line 45
+Parsing [Setup] section, line 46
+Parsing [Setup] section, line 47
+Parsing [Setup] section, line 48
+Parsing [Setup] section, line 49
+Parsing [Setup] section, line 50
+Parsing [Setup] section, line 51
+Parsing [Setup] section, line 54
+Parsing [Setup] section, line 55
+Parsing [Setup] section, line 56
+Parsing [Setup] section, line 59
+Parsing [Setup] section, line 62
+Parsing [Setup] section, line 64
+Parsing [Setup] section, line 65
+Parsing [Setup] section, line 66
+Parsing [Setup] section, line 67
+Parsing [Setup] section, line 68
+Parsing [Setup] section, line 69
+Parsing [Setup] section, line 70
+Parsing [Setup] section, line 72
+Parsing [Setup] section, line 73
+Parsing [Setup] section, line 77
+Parsing [Setup] section, line 78
+Parsing [Setup] section, line 79
+Parsing [Setup] section, line 81
+Parsing [Setup] section, line 82
+Parsing [Setup] section, line 83
+Parsing [Setup] section, line 85
+Parsing [Setup] section, line 86
+Reading file (WizardImageFile)
+Reading file (WizardSmallImageFile)
+Preparing Setup program executable
+   Verification successful
+   Updating icons (Setup.e32)
+   Updating version info (Setup.e32)
+Determining language code pages
+Parsing [Languages] section, line 89
+   Reading file: C:\Program Files (x86)\Inno Setup 6\Default.isl
+   Messages in script file
+Reading default messages from Default.isl
+Parsing [Languages] section, line 89
+   Reading file: C:\Program Files (x86)\Inno Setup 6\Default.isl
+Parsing [LangOptions], [Messages], and [CustomMessages] sections
+   Messages in script file
+Reading [Code] section
+Parsing [Tasks] section, line 98
+Parsing [Icons] section, line 106
+Parsing [Icons] section, line 109
+Parsing [Run] section, line 112
+Parsing [Files] section, line 102
+Creating setup files
+   Verification successful
+   Updating icons (Setup.exe)
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\connectivity_plus_plugin.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\file_selector_windows_plugin.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\flutter_windows.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\pchat_app.exe
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\permission_handler_windows_plugin.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\url_launcher_windows_plugin.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\WebView2Loader.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\webview_all_windows_plugin.dll
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\app.so
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\icudtl.dat
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\AssetManifest.bin
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\FontManifest.json
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\NativeAssetsManifest.json
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\NOTICES.Z
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\assets\animations\animation.apng
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\assets\icon\icon.png
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\assets\images\c_lost_desktop.png
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\assets\images\c_lost_phone.png
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\fonts\MaterialIcons-Regular.otf
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\shaders\ink_sparkle.frag
+   Compressing: D:/a/pchat/pchat/build/windows/x64/runner/Release\data\flutter_assets\shaders\stretch_effect.frag
+   Compressing Setup program executable
+   Updating version info (Setup.exe)
+   Updating manifest (Setup.exe)
+
+
+Successful compile (5.656 sec). Resulting Setup program filename is:
+D:\a\pchat\pchat\dist\windows\pchat_app-1.0.1-windows-x64-installer.exe
+total 27884
+drwxr-xr-x 1 runneradmin 197121        0 Oct 22 15:47 .
+drwxr-xr-x 1 runneradmin 197121        0 Oct 22 15:42 ..
+-rwxr-xr-x 1 runneradmin 197121 13587056 Oct 22 15:47 pchat_app-1.0.1-windows-x64-installer.exe
+-rw-r--r-- 1 runneradmin 197121 14961434 Oct 22 15:42 pchat_app-windows-x64.zip
+https://github.com/pchat9462/pchat/releases/tag/v1.0.1
+title:	PCHAT v1.0.1
+tag:	v1.0.1
+draft:	false
+prerelease:	false
+immutable:	false
+author:	github-actions[bot]
+created:	2026-10-22T15:35:58Z
+published:	2026-10-22T15:47:46Z
+url:	https://github.com/pchat9462/pchat/releases/tag/v1.0.1
+asset:	pchat_app-1.0.1-windows-x64-installer.exe
+asset:	pchat_app-windows-x64.zip
+--
+Windows build of PCHAT.
+
+The installer puts the app into Program Files and leaves a Desktop shortcut and a Start menu entry behind, both with PCHAT's own icon. It also registers the app in Settings, so it can be uninstalled from there.
+
+The zip is the app folder itself, for anyone who would rather run it without installing. Keep the whole folder: the .exe needs data and the .dll files next to it.
